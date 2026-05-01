@@ -66,6 +66,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employee;
     }
 
+    /**
+     * 新增员工
+     * @param employeeDTO
+     */
     public void save(EmployeeDTO employeeDTO){
         Employee employee=new Employee();
         BeanUtils.copyProperties(employeeDTO,employee);
@@ -82,6 +86,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeMapper.insert(employee);
     }
 
+    /**
+     * 分页查询员工
+     * @param employeePageQueryDTO
+     * @return
+     */
     public PageResult page(EmployeePageQueryDTO employeePageQueryDTO){
         PageHelper.startPage(employeePageQueryDTO.getPage(),employeePageQueryDTO.getPageSize());
         Page<Employee > pages = employeeMapper.page(employeePageQueryDTO);
@@ -89,5 +98,37 @@ public class EmployeeServiceImpl implements EmployeeService {
         List<Employee> list=pages.getResult();
 
         return new PageResult(total,list);
+    }
+
+    /**
+     * 员工的状态修改
+     * @param status
+     * @param id
+     */
+    public void StartandStop(Integer status,Long id){
+       Employee emp= Employee.builder()
+                .status(status)
+                .id(id)
+                .updateTime(LocalDateTime.now())
+                .build();
+        employeeMapper.update(emp);
+    }
+
+    /**
+     * 根据id查询
+     * @param id
+     * @return
+     */
+    public Employee getById(Long id){
+        return employeeMapper.getById(id);
+    }
+
+    /**
+     * 更新编辑后的员工信息
+     * @param emp
+     */
+    public void update(Employee emp){
+        emp.setUpdateTime(LocalDateTime.now());
+        employeeMapper.update(emp);
     }
 }
