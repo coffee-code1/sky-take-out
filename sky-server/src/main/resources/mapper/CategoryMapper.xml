@@ -17,4 +17,26 @@
         </where>
         order by sort desc
     </select>
+
+    <update id="update" parameterType="Category">
+        update category
+        <set>
+            <if test="status != null">status=#{status},</if>
+            <if test="type != null">type=#{type},</if>
+            <if test="sort != null">sort=#{sort},</if>
+            <if test="name != null">name=#{name},</if>
+            <if test="updateTime != null">update_time=#{updateTime},</if>
+            <if test="updateUser != null">update_user=#{updateUser},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="listfind" resultType="Category">
+        select * from category
+        where status = 1
+        <if test = "type!=null">
+            and type = #{type}
+        </if>
+        order by sort asc,create_time desc
+    </select>
 </mapper>
