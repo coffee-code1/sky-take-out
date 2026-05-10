@@ -9,7 +9,6 @@ import com.sky.service.CategoryService;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,11 +68,16 @@ public class CategoryController {
         return Result.success();
     }
 
-//    @GetMapping("/list")
-//    @ApiOperation("根据类型查询")
-//    public Result<List<Category>> find(Long type){
-//        log.info("查询的type为：{}",type);
-//        List<Category>lists= categoryService.list(type);
-//        return Result.success(lists);
-//    }
+    /**
+     * 根据菜品分类查询所有的分类名字，回显给前端，显示在下拉列表里
+     * @param type
+     * @return
+     */
+    @GetMapping("/list")
+    @ApiOperation("根据类型查询")
+    public Result<List<Category>> find(Long type){
+        log.info("查询的type为：{}",type);
+        List<Category>lists= categoryService.list(type);
+        return Result.success(lists);
+    }
 }
