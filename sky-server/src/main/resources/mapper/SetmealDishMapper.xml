@@ -4,17 +4,27 @@
 <mapper namespace="com.sky.mapper.SetmealDishMapper">
     <select id="getSetmealsIdsBydishIds" resultType="Long">
         select setmeal_id from setmeal_dish where dish_id in
-                                   <foreach collection="ids" item="id" separator="," open="(" close=")">
-                                       #{id}
-                                   </foreach>
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
     </select>
 
-    <insert id="insert" parameterType="SetmealDish">
+    <insert id="insert">
         insert into setmeal_dish(setmeal_id,dish_id,name,price,copies)
         values
-            <foreach collection="lists" item="sd"  separator=",">
-                (#{sd.setmealId}, #{sd.dishId}, #{sd.name}, #{sd.price}, #{sd.copies})
-            </foreach>
+        <foreach collection="lists" item="sd" separator=",">
+            (#{sd.setmealId}, #{sd.dishId}, #{sd.name}, #{sd.price}, #{sd.copies})
+        </foreach>
     </insert>
 
+    <select id="getBySetmealId" resultType="com.sky.entity.SetmealDish">
+        select * from setmeal_dish where setmeal_id = #{id}
+    </select>
+
+    <delete id="deleteBySetmealIds">
+        delete from setmeal_dish where setmeal_id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>
