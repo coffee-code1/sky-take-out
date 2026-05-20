@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -113,5 +114,18 @@ public class DishServiceImpl implements DishService {
     @Override
     public List<DishVO> list(Long categoryId) {
         return dishMapper.list(categoryId);
+    }
+
+    @Override
+    public List<DishVO> listWithFlavor(Dish dish) {
+        List<Dish> dishList = dishMapper.listByCondition(dish);
+        List<DishVO> dishVOList = new ArrayList<>();
+        for (Dish item : dishList) {
+            DishVO dishVO = new DishVO();
+            BeanUtils.copyProperties(item, dishVO);
+            dishVO.setFlavors(dishFavorMapper.getById(item.getId()));
+            dishVOList.add(dishVO);
+        }
+        return dishVOList;
     }
 }

@@ -36,6 +36,8 @@ public interface DishMapper {
 
     List<DishVO> list(@Param("categoryId") Long categoryId);
 
+    List<Dish> listByCondition(Dish dish);
+
     void delete(@Param("ids") List<Long> ids);
 
     @AutoFill(values = OperationType.UPDATE)

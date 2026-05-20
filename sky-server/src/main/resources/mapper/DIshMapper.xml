@@ -36,6 +36,22 @@
         order by d.update_time desc
     </select>
 
+    <select id="listByCondition" parameterType="com.sky.entity.Dish" resultType="com.sky.entity.Dish">
+        select * from dish
+        <where>
+            <if test="name != null and name != ''">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+
     <delete id="delete">
         delete from dish where id in
         <foreach collection="ids" separator="," open="(" close=")" item="id">

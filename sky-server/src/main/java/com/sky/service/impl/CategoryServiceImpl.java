@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -112,7 +113,23 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     public List<Category> list(Long type){
-       List<Category>lists = categoryMapper.listfind(type);
-       return lists;
+       List<Category> lists = categoryMapper.listfind(type);
+       if (lists == null || lists.isEmpty() || type == null) {
+           return lists;
+       }
+
+       List<Category> filteredList = new ArrayList<>();
+       for (Category category : lists) {
+           if (category == null || category.getId() == null) {
+               continue;
+           }
+           if (type == 1 && dishMapper.getById(category.getId()) > 0) {
+               filteredList.add(category);
+           }
+           if (type == 2 && setmealMapper.getById(category.getId()) > 0) {
+               filteredList.add(category);
+           }
+       }
+       return filteredList;
     }
 }
