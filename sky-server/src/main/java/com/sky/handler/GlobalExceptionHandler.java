@@ -39,4 +39,10 @@ public class GlobalExceptionHandler {
         }
        return Result.error(MessageConstant.UNKNOWN_ERROR);
     }
+
+    @ExceptionHandler
+    public Result exceptionHandler(Exception ex){
+        log.error("Unhandled exception", ex);
+        return Result.error("SYSTEM_ERROR");
+    }
 }

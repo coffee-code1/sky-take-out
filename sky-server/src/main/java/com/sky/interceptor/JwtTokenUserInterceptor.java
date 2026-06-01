@@ -1,8 +1,10 @@
 package com.sky.interceptor;
 
+import com.alibaba.fastjson.JSON;
 import com.sky.constant.JwtClaimsConstant;
 import com.sky.context.BaseContext;
 import com.sky.properties.JwtProperties;
+import com.sky.result.Result;
 import com.sky.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
@@ -30,14 +32,17 @@ public class JwtTokenUserInterceptor implements HandlerInterceptor {
         String token = request.getHeader(jwtProperties.getUserTokenName());
 
         try {
-            log.info("User jwt check: {}", token);
+            log.info("User jwt check, uri: {}, token: {}", request.getRequestURI(), token);
             Claims claims = JwtUtil.parseJWT(jwtProperties.getUserSecretKey(), token);
             Long userId = Long.valueOf(claims.get(JwtClaimsConstant.USER_ID).toString());
             BaseContext.setCurrentId(userId);
             log.info("Current user id: {}", userId);
             return true;
         } catch (Exception ex) {
+            log.warn("User jwt parse failed, uri: {}, token: {}, error: {}", request.getRequestURI(), token, ex.getMessage());
             response.setStatus(401);
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write(JSON.toJSONString(Result.error("NOT_LOGIN")));
             return false;
         }
     }
