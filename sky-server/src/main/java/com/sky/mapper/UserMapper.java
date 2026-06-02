@@ -4,16 +4,15 @@ import com.sky.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.Map;
+
 @Mapper
 public interface UserMapper {
 
-    /**
-     * 根据用户id查询用户是否存在
-     * @param openid
-     * @return
-     */
     @Select("select * from user where openid = #{openid}")
     User getByOpenid(String openid);
 
     void insert(User user);
+
+    Integer countByMap(Map<String, Object> map);
 }
