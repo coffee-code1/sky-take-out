@@ -15,6 +15,9 @@ import java.util.List;
 @Mapper
 public interface DishMapper {
 
+    @Select("select count(*) from dish where status = #{status}")
+    Integer countByStatus(@Param("status") Integer status);
+
     @Select("select count(id) from dish where category_id = #{categoryId}")
     Integer getById(@Param("categoryId") Long categoryId);
 

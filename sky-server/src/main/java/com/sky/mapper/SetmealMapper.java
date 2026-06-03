@@ -16,6 +16,9 @@ import java.util.List;
 @Mapper
 public interface SetmealMapper {
 
+    @Select("select count(*) from setmeal where status = #{status}")
+    Integer countByStatus(@Param("status") Integer status);
+
     @Select("select count(id) from setmeal where category_id = #{categoryId}")
     Integer getById(@Param("categoryId") Long id);
 
